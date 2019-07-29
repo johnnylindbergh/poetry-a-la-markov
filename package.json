@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/johnnylindbergh/poetry-a-la-markov/issues"
   },
-  "homepage": "https://github.com/johnnylindbergh/poetry-a-la-markov#readme"
+  "homepage": "https://github.com/johnnylindbergh/poetry-a-la-markov#readme",
+  "dependencies": {
+    "string-markov-js": "^1.2.4"
+  }
 }
