@@ -17,7 +17,7 @@ var markov = require('string-markov-js');
 var rhyme = require('./rhyme.js')
 const rhyming_schemes = 
 [
-	"a b / a b",
+	"a b a b",
 	"a b a b b c b c",
 	"a b c b c d e b e d",
 	"A B A B / C D D C"
@@ -51,7 +51,7 @@ dataset.trainOnFile(filename, ngram, preserveLineBreaks, function() {
 		var text = [];
 		var poem_text = buildLineRecusively(text, length_of_this_line, dataset, poem);
 		poem = poem.concat(poem_text);
-		console.log("poem_text", poem_text);
+		//console.log("poem_text", poem_text);
 		console.log(poem)
 		//console.log("new line with rhyme", rhyming_scheme[line])
 	}
@@ -66,38 +66,38 @@ dataset.trainOnFile(filename, ngram, preserveLineBreaks, function() {
 function buildLineRecusively(line, line_length, dataset, poem){
 	//console.log("line",line);
 	if (line.length < line_length){
-		//end line with rhyme
-	
-	
-	
 
-	if (line.length == 0){
-		if (poem.length == 0){
-			line = line.concat(dataset.generate(ngram+1,true).split(' '));
-		} else {
-			var last_n_words_of_previous_line = poem.slice(Math.max(poem.length - ngram, 1))
-			console.log('last_n_words_of_previous_line',last_n_words_of_previous_line)
-			var possibilities = dataset.getPossibilities(last_n_words_of_previous_line);
+		if (line.length == 0){
+			if (poem.length == 0){
+				line = line.concat(dataset.generate(ngram+1,true).split(' '));
+			} else {
+				var last_n_words_of_previous_line = poem.slice(Math.max(poem.length - ngram, 1))
+				//console.log('last_n_words_of_previous_line',last_n_words_of_previous_line)
+				var possibilities = dataset.getPossibilities(last_n_words_of_previous_line);
+				if (possibilities){
+					var choose = possibilities[Math.floor(Math.random()*possibilities.length)]
+					line.push(choose);
+				}
+			}
+		}
+
+		last_n_words = line.slice(Math.max(line.length - ngram, 1))
+	
+		//console.log("line",line);
+		//console.log("last_n_words:", last_n_words);
+		var possibilities = dataset.getPossibilities(last_n_words);
+		//console.log("possibilities:", possibilities);
+		if (possibilities){
 			var choose = possibilities[Math.floor(Math.random()*possibilities.length)]
 			line.push(choose);
+			return buildLineRecusively(line,line_length++, dataset, poem)
 		}
-	}
 
-	last_n_words = line.slice(Math.max(line.length - ngram, 1))
-	
-	//console.log("line",line);
-	//console.log("last_n_words:", last_n_words);
-	var possibilities = dataset.getPossibilities(last_n_words);
-	//console.log("possibilities:", possibilities);
-	if (possibilities){
-		var choose = possibilities[Math.floor(Math.random()*possibilities.length)]
-	line.push(choose);
-	return buildLineRecusively(line,line_length++, dataset, poem)
-	}
+	} else {
 
-} else {
-	return line
-}
+		return line
+
+	}
 	
 }
 
