@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/johnnylindbergh/poetry-a-la-markov#readme",
   "dependencies": {
+    "request": "^2.88.0",
     "string-markov-js": "^1.2.4"
   }
 }
