@@ -34,15 +34,14 @@ var line_length_variance = 3;
 
 var filename = 'bee_movie_script.txt';
 var ngram = 2;
-var preserveLineBreaks = true;
-var text = [];
-text.push("")
+var preserveLineBreaks = false;
+var poem = [];
 
 dataset.trainOnFile(filename, ngram, preserveLineBreaks, function() {
-	console.log("Training complete.");
 
 
    rhyming_scheme = rhyming_scheme.split(" ")
+   
    for (var line = 0; line < rhyming_scheme.length; line++) {
 	if (rhyming_scheme[line] == "/"){
 		//text.push("\n");
@@ -50,30 +49,38 @@ dataset.trainOnFile(filename, ngram, preserveLineBreaks, function() {
 		var length_of_this_line = line_length + Math.floor((Math.random()*line_length_variance)-(line_length_variance/2))
 		
 		var text = [];
-		text = buildLineRecusively(text, length_of_this_line, dataset);
-		console.log(text);
+		var poem_text = buildLineRecusively(text, length_of_this_line, dataset, poem);
+		poem = poem.concat(poem_text);
+		console.log("poem_text", poem_text);
+		console.log(poem)
 		//console.log("new line with rhyme", rhyming_scheme[line])
 	}
    }
-   console.log(text);
+   //console.log(text);
 
    //var possibilities = dataset.getPossibilities(['This','is']);
 
 	//console.log(possibilities);
 });
 
-function buildLineRecusively(line, line_length, dataset){
-	if (line.length == line_length - 1){
+function buildLineRecusively(line, line_length, dataset, poem){
+	//console.log("line",line);
+	if (line.length < line_length){
 		//end line with rhyme
-		//break
-		if (line[line.length] == "the"){
-			console.log(line)
-			
-		}
-	}
+	
+	
+	
 
 	if (line.length == 0){
-		line = line.concat(dataset.generate(ngram+1,true).split(' '));
+		if (poem.length == 0){
+			line = line.concat(dataset.generate(ngram+1,true).split(' '));
+		} else {
+			var last_n_words_of_previous_line = poem.slice(Math.max(poem.length - ngram, 1))
+			console.log('last_n_words_of_previous_line',last_n_words_of_previous_line)
+			var possibilities = dataset.getPossibilities(last_n_words_of_previous_line);
+			var choose = possibilities[Math.floor(Math.random()*possibilities.length)]
+			line.push(choose);
+		}
 	}
 
 	last_n_words = line.slice(Math.max(line.length - ngram, 1))
@@ -84,9 +91,13 @@ function buildLineRecusively(line, line_length, dataset){
 	//console.log("possibilities:", possibilities);
 	if (possibilities){
 		var choose = possibilities[Math.floor(Math.random()*possibilities.length)]
-	text.push(choose);
-	return buildLineRecusively(text,line_length++, dataset)
+	line.push(choose);
+	return buildLineRecusively(line,line_length++, dataset, poem)
 	}
+
+} else {
+	return line
+}
 	
 }
 
