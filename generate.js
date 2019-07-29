@@ -1,2 +1,3 @@
-// Processing of corpus
-
+/*
+	generate.js: Processing of corpus
+*/
