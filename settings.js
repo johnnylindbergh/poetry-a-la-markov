@@ -4,5 +4,8 @@
 */
 
 module.exports = {
-	RHYME_API: 'https://api.datamuse.com/words?rel_rhy='
+	// Datamuse Rhyming API
+	RHYME_API: 'https://api.datamuse.com/words?rel_rhy=',
+
+	SOUND_LIKE_API: 'https://api.datamuse.com/words?sl=',
 }
