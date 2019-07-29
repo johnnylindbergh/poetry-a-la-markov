@@ -28,13 +28,14 @@ var line_length = 10;
 var filename = 'bee_movie_script.txt';
 var ngram = 3;
 var preserveLineBreaks = true;
- 
+
 dataset.trainOnFile(filename, ngram, preserveLineBreaks, function() {
     console.log("Training complete.");
-});
 
-var startWithCapitalNGram = true;
-var text = dataset.generate(100, startWithCapitalNGram);
+
+    var text = dataset.generate(75, true);
+    console.log(text);
+});
 
 
 
