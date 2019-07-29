@@ -19,6 +19,7 @@ const rhyming_schemes =
 	"a b a b",
 	"a b a b b c b c",
 	"a b c b c d e b e d"
+	"A B A B / C D D C"
 ]
 
 var dataset = markov.newDataSet();
