@@ -6,7 +6,7 @@ module.exports = {
 
 	/*	Generate a string poem, given a trained markov chain object, and a
 		string representing the desired rhyme scheme */
-	generatePoemFromScheme: function(chain, scheme) {
+	generatePoemFromScheme: function(chain, schemeStr) {
 
 	}
 

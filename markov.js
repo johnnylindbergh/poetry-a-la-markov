@@ -11,15 +11,22 @@ module.exports = {
 	},
 
 	/*	Chain Int -> String[]
-		Generate n random sentences of any length, from the given markov chain object */
+		Generate n random sentences from a given markov chain */
 	getMarkovSentences: function(chain, n) {
 
 	},
 
 	/*	String[] -> String[][]
-		Given a list of sentences, group them together by last word rhyme */
+		Given a list of sentences, group them together by last word rhyme.
+		Remove sentences with redundancy in end word */
 	constructRhymingDict: function(sentences) {
 
-	}
+	},
+
+	
+
+
+
+
 
 }
