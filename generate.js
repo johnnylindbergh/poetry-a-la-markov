@@ -8,6 +8,10 @@ module.exports = {
 		string representing the desired rhyme scheme */
 	generatePoemFromScheme: function(chain, schemeStr) {
 
+		/*
+			
+		*/
+
 	}
 
 }

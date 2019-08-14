@@ -10,6 +10,12 @@ module.exports = {
 
 	},
 
+	/*	void -> Chain
+		Train a markov chain on the indicated corpi in settings.js */
+	establishMarkovChain: function() {
+
+	}
+
 	/*	Chain Int -> String[]
 		Generate n random sentences from a given markov chain */
 	getMarkovSentences: function(chain, n) {
@@ -23,7 +29,7 @@ module.exports = {
 
 	},
 
-	
+
 
 
 
