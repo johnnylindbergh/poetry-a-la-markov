@@ -27,12 +27,6 @@ module.exports = {
 		Remove sentences with redundancy in end word */
 	constructRhymingDict: function(sentences) {
 
-	},
-
-
-
-
-
-
+	}
 
 }

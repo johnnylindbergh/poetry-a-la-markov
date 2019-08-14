@@ -1,5 +1,4 @@
 
-
 class Scheme {
 
 	/*	Given a string representing a rhyme scheme, 
