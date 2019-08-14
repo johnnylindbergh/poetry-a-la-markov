@@ -4,6 +4,7 @@ class Scheme {
 	/*	Given a string representing a rhyme scheme, 
 		construct an object to generate a poem for that scheme */
 	constructor(_schemeStr) {
+		// store scheme string in Scheme object
 		this.schemeStr = _schemeStr;
 
 		// String -> Int (mapping of token to frequency)
@@ -19,7 +20,7 @@ class Scheme {
 
 	}
 
-	/*	String[][] -> void 
+	/*	String[][] -> void
 		Populates the tokenToSentence mapping with a subset of the given rhyming 
 		dictionary that is sufficient to generate a new poem with this scheme.
 		Modifies this.tokenToSentence */
