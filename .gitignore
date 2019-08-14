@@ -1,6 +1,8 @@
 # Credentials file
 /credentials.js
 
+*.txt
+
 package-lock.json
 
 # Dependency directories
