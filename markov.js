@@ -10,6 +10,22 @@
 
 	Ngram -> array of all possible consequent words
 
+
+	A B / A A B
+
+	1: This is the bread (A)
+	2: Another line cat (B)
+	3: / 
+	4: This is Ted (A)
+	5: Another line with Ned (A)
+	6: Cat rhymes with bat (B)
+
+	{
+		"A": [all rhymes with "bread", with flags indicating 
+				if they've been used in poem already]
+
+	}
+
 */
 
 var markov = require('string-markov-js');
