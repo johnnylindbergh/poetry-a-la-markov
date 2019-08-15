@@ -18,7 +18,7 @@ module.exports = {
 			use Scheme.reduceRhymingDict to match entries in the rhyming dictionary to tokens in the scheme
 
 			Finally, use Scheme.getPoem to get an actual poem string using the constructed scheme
-			
+
 		*/
 
 	}

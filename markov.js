@@ -2,19 +2,38 @@
 	markov.js: Markov chain bits
 */
 
+const sys = require('./setting.js');
+
 module.exports = {
 
 	/*	String -> String
-		Preprocess a corpus (string) to get it ready to be markov'd */
-	preprocessCorpus: function(corpus) {
+		Preprocess several training files and dump into specified 
+		corpus file to get it ready to be markov'd */
+	compileCorpus: function(cb) {
 
 	},
 
-	/*	void -> Chain
-		Train a markov chain on the indicated corpi in settings.js */
-	establishMarkovChain: function() {
+	/*	Compile corpus as needed and run trainMarkovChain */
+	establishMarkovChain: function(cb) {
+		// if corpus needs to be recompiled
+		if (sys.COMPILE_CORPUS) {
+			// compile corpus file using training files specified in settings
+			module.exports.compileCorpus(function(err) {
+				if (!err) {
+					module.exports.trainMarkovChain(cb);
+				} else {
+					cb(err);
+				}
+			});
+		} else {
+			module.exports.trainMarkovChain(cb);
+		}
+	},
 
-	}
+	/*	Read and train on corpus file. Stores markov object in module.exports as 'chain' */
+	trainMarkovChain: function(cb) {
+
+	},
 
 	/*	Chain Int -> String[]
 		Generate n random sentences from a given markov chain */

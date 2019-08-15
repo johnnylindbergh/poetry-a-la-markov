@@ -7,8 +7,14 @@ module.exports = {
 	// Datamuse Rhyming API
 	RHYME_API: 'https://api.datamuse.com/words?rel_rhy=',
 
-	// all corpus files
-	MARKOV_CORPI: [],
+	// all files to use for markov training
+	MARKOV_TRAINING_FILES: [],
+
+	// filename of large corpus file to dump all preprocessed training files into
+	MARKOV_CORPUS: 'corpus.txt', 
+
+	// whether or not to recompile the corpus
+	COMPILE_CORPUS: true,
 
 	// ngram number for all markov training
 	MARKOV_NGRAM: 2
