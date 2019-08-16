@@ -90,7 +90,7 @@ module.exports = {
 	},
 
 	/*	gets the last word of a given sentence */
-	getLastWord: function(sentence){
+	getLastWord: function(sentence) {
 		var words = sentence.split(" ");
 		return words[words.length - 1].split('.')[0]
 	},
@@ -103,7 +103,7 @@ module.exports = {
 		var cache = {};
 		var words = [];
 
-		for (var i = 0; i < sentences.length; i++){
+		for (var i = 0; i < sentences.length; i++) {
 			var lastWord = module.exports.getLastWord(sentences[i]);
 			words.push(lastWord)
 		}
@@ -111,18 +111,34 @@ module.exports = {
 		results = [];
 
 		(async () => {
+			try {
+				for (var w = 0; w < words.length; w++) {
+					await rhyme.getRhymes(words[w], cache);
+				}
 
-			for (var w = 0; w < words.length; w++){
-				var rhymes = await rhyme.getRhymes(words[w], cache);
-				results.push(rhymes);			
+				//console.log(results);
+				//	console.log(cache);
+				// do the construnction of the rhyme 
+
+				for (var i = 0; i < sentences.length; i++) {
+					var lastWord = module.exports.getLastWord(sentences[i]);
+					
+					var rhymes = cache[lastWord];
+
+					console.log(sentences[i]);
+					console.log(rhymes);
+				} 
+
+
+			} catch (err) {
+				cb(err);
 			}
-			//console.log(results);
-
-			// do the construnction of the rhyme 
 		})();
 
 	}
 
 }
 
-module.exports.constructRhymingDict(testSentences);
+module.exports.constructRhymingDict(testSentences, function(err) {
+	if (err) throw err;
+});
