@@ -86,7 +86,6 @@ module.exports = {
 
 			// do the construnction of the rhyme 
 		})();
-		console.log(results);
 
 	}
 
