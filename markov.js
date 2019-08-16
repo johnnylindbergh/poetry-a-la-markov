@@ -4,9 +4,6 @@
 
 const sys = require('./settings.js');
 const rhyme = require('./rhyme.js');
-const fs = require('fs');
-const markov = require('string-markov-js');
-const readMult = require('read-multiple-files');
 
 var testSentences = 
 [
@@ -17,28 +14,14 @@ var testSentences =
 	"This is an orange.",
 ];
 
+
 module.exports = {
 
 	/*	String -> String
 		Preprocess several training files and dump into specified 
 		corpus file to get it ready to be markov'd */
 	compileCorpus: function(cb) {
-		var data = "";
 
-		// read all markov training files
-		readMult(new Set(sys.MARKOV_TRAINING_FILES)).subscribe({
-		  next(result) {
-		  	// add file contents to bulk data, separated by newline
-		  	data += result.contents.toString() + '\n';
-		  },
-		  complete() {
-
-		  	// process the data here!
-
-		    // write processed text to corpus file
-			fs.writeFile(sys.MARKOV_CORPUS, data, cb);
-		  }
-		});
 	},
 
 	/*	Compile corpus as needed and run trainMarkovChain */
@@ -60,35 +43,13 @@ module.exports = {
 
 	/*	Read and train on corpus file. Stores markov object in module.exports as 'chain' */
 	trainMarkovChain: function(cb) {
-		// read corpus file
-		fs.readFile(sys.MARKOV_CORPUS, function(err, corpus) {
-			if (!err) {
-				// initialize new markov chain
-				var chain = markov.newDataSet();
 
-				// train the chain on the full corpus
-				chain.trainOnString(corpus.toString(), sys.MARKOV_NGRAM, false);
-
-				// store chain in markov.js exports
-				module.exports.chain = chain;
-
-				cb();
-			} else {
-				cb(err);
-			}
-		});
 	},
 
 	/*	Chain Int -> String[]
 		Generate n random sentences from a given markov chain */
 	getMarkovSentences: function(chain, n) {
-		var s = [];
 
-		for (var i = 0; i < n; i++) {
-			s.push(chain.sentence());
-		}
-
-		return s;
 	},
 
 	/*	gets the last word of a given sentence */
@@ -103,51 +64,32 @@ module.exports = {
 	/*	String[] -> String[][]
 		Given a list of sentences, group them together by last word rhyme.
 		Remove sentences with redundancy in end word */
-	constructRhymingDict: function(sentences) {
+	constructRhymingDict: function(sentences, cb) {
 		var rhymeDic = [];
 		var cache = {};
+		var words = [];
 
 		for (var i = 0; i < sentences.length; i++){
-			console.log(sentences[i]);
 			var lastWord = module.exports.getLastWord(sentences[i]);
-
-
-			rhyme.getRhymes(lastWord, cache, function(err, res){
-
-				if (!err && res.length != 0){
-
-					//console.log(res);
-
-
-					//check the rhymeDic if there is a sentence that ends with one of the words from the res
-					for (var j = 0; j < rhymeDic.length; j++){
-						for (var k = 0; k < rhymeDic[j].length; k++){
-							console.log(rhymeDic[j][k])
-						}
-					}
-
-				} else {
-					// console.log("unable to get rhyme results of " + lastWord );
-					// console.log("sentences[i]: "+sentences[i]);
-					// console.log(i);
-					rhymeDic.push([sentences[i]]);
-				}
-				
-
-			});
-
-
+			words.push(lastWord)
 		}
+
+		results = [];
+
+		(async () => {
+
+			for (var w = 0; w < words.length; w++){
+				var rhymes = await rhyme.getRhymes(words[w], cache);
+				results.push(rhymes);			
+			}
+			//console.log(results);
+
+			// do the construnction of the rhyme 
+		})();
+		console.log(results);
+
 	}
 
 }
 
-
-
-module.exports.establishMarkovChain(function(err) {
-	if (err) throw err;
-
-	console.log(module.exports.chain.sentence());
-
-
-});
+module.exports.constructRhymingDict(testSentences);

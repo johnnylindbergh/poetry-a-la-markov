@@ -11,8 +11,8 @@ module.exports = {
 	MARKOV_TRAINING_FILES: [
 		// 'training/bee.txt',
 		// 'training/whitman_complete_poetry.txt'
-		'training/a.txt',
-		'training/b.txt'
+		'training/bee_movie_script.txt',
+		
 	],
 
 	// filename of large corpus file to dump all preprocessed training files into
