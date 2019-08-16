@@ -17,7 +17,22 @@ class Scheme {
 	/*	void -> [String -> Integer]
 		Get the frequency of each token in the scheme string */
 	parseTokenFreq() {
+		var tokens = this.schemeStr.split(' ');		// split by spaces
+		var map = {};	// mapping of token to frequency
 
+		for (var i = 0; i < tokens.length; i++) {
+			// omit slashes as they are special characters
+			if (tokens[i] != '/') {
+				// increment count of this rhyme token
+				if (!map[tokens[i]]) {
+					map[tokens[i]] = 1;
+				} else {
+					map[tokens[i]]++;
+				}
+			}
+		}
+
+		return map;
 	}
 
 	/*	String[][] -> void
@@ -39,5 +54,4 @@ class Scheme {
 
 
 
-var s = new Scheme('A B / A B');
-console.log(s.schemeStr);
+var s = new Scheme('1 12 / 12 3 4 / 1 3');

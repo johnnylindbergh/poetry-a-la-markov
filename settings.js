@@ -9,8 +9,8 @@ module.exports = {
 
 	// all files to use for markov training
 	MARKOV_TRAINING_FILES: [
-		// 'training/bee.txt',
-		// 'training/whitman_complete_poetry.txt'
+		'training/bee.txt',
+		'training/whitman_complete_poetry.txt',
 		'training/a.txt',
 		'training/b.txt'
 	],

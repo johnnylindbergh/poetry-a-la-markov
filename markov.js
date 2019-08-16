@@ -108,7 +108,6 @@ module.exports = {
 			console.log(sentences[i]);
 			var lastWord = module.exports.getLastWord(sentences[i]);
 
-
 			rhyme.getRhymes(lastWord, cache, function(err, res){
 
 				if (!err && res.length != 0){
@@ -138,3 +137,9 @@ module.exports = {
 	}
 
 }
+
+module.exports.establishMarkovChain(function(err) {
+	if (err) throw err;
+
+	console.log(module.exports.getMarkovSentences(10));
+});
