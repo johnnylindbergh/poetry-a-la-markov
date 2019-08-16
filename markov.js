@@ -17,8 +17,7 @@ var testSentences =
 
 module.exports = {
 
-	/*	String -> String
-		Preprocess several training files and dump into specified 
+	/*	Preprocess several training files and dump into specified 
 		corpus file to get it ready to be markov'd */
 	compileCorpus: function(cb) {
 		var data = "";
@@ -89,8 +88,10 @@ module.exports = {
 		return s;
 	},
 
-	/*	gets the last word of a given sentence */
-	getLastWord: function(sentence) {
+
+	/*	String -> String
+		Gets the last word of a given sentence */
+	getLastWord: function(sentence){
 		var words = sentence.split(" ");
 		return words[words.length - 1].split('.')[0]
 	},
@@ -103,6 +104,8 @@ module.exports = {
 		var cache = {};
 		var words = [];
 
+
+		// extract last word from each sentence 
 		for (var i = 0; i < sentences.length; i++) {
 			var lastWord = module.exports.getLastWord(sentences[i]);
 			words.push(lastWord)
@@ -116,18 +119,13 @@ module.exports = {
 					await rhyme.getRhymes(words[w], cache);
 				}
 
-				//console.log(results);
-				//	console.log(cache);
-				// do the construnction of the rhyme 
-
 				for (var i = 0; i < sentences.length; i++) {
-					var lastWord = module.exports.getLastWord(sentences[i]);
-					
+					var lastWord = words[i];
 					var rhymes = cache[lastWord];
 
 					console.log(sentences[i]);
 					console.log(rhymes);
-				} 
+				}
 
 
 			} catch (err) {
