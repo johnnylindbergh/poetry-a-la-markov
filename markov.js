@@ -5,6 +5,9 @@
 const sys = require('./settings.js');
 const rhyme = require('./rhyme.js');
 const Scheme = require('./scheme.js');
+const readMult = require('read-multiple-files');
+const fs = require('fs');
+const markov = require('string-markov-js');
 
 var testSentences = 
 [
@@ -100,6 +103,9 @@ module.exports = {
 	/*	String -> String
 		Gets the last word of a given sentence */
 	getLastWord: function(sentence){
+
+		// REWRITE TO HANDLE ALL SENTENCE ENDINGS
+
 		var words = sentence.split(" ");
 		return words[words.length - 1].split('.')[0].toLowerCase();
 	},
@@ -112,7 +118,6 @@ module.exports = {
 		var cache = {};
 		var words = [];
 
-
 		// extract last word from each sentence 
 		for (var i = 0; i < sentences.length; i++) {
 			var lastWord = module.exports.getLastWord(sentences[i]);
@@ -123,70 +128,45 @@ module.exports = {
 
 		(async () => {
 			try {
+				// load all rhyming dictionary API calls into cache object
 				for (var w = 0; w < words.length; w++) {
 					await rhyme.getRhymes(words[w], cache);
 				}
 
+				// for each sentence
 				for (var i = 0; i < sentences.length; i++) {
 					if (sentences[i]){
-
-
+						// get last word, and all rhymes
 						var lastWord = words[i];
 						var rhymes = cache[lastWord];
+
+						// start a group with this sentence
 						var group = [sentences[i]];
 						sentences[i] = null;
 
+						// for the rest of the sentences
 						for (var j = i + 1; j < sentences.length; j++) {
-							if (j < sentences.length && rhymes.indexOf(words[j]) != -1  && sentences[j]) {
-
-								//console.log(words[j]+" rhymes with " + lastWord);
-
+							// if not looking at same sentence, and last words rhyme
+							if (j < sentences.length && sentences[j] && rhymes.indexOf(words[j]) != -1) {
+								// add sentence j to group with sentence i
 								group.push(sentences[j]);
-								
+
+								// remove sentence as possibility
 								sentences[j] = null;
 							}
 
 						}
 							
-							rhymeDic.push(group);
-						
-						
-
-
-
-
+						rhymeDic.push(group);
 					}	
 				}
 
-				console.log(rhymeDic);
+				// callback on rhyming dictionary
 				cb(null, rhymeDic);
-
-				//console.log(rhymeDic);
-
 			} catch (err) {
 				cb(err);
 			}
 		})();
-
 	}
 
 }
-
-
-module.exports.constructRhymingDict(testSentences, function(err, rhymeDic) {
-	if (err) throw err;
-
-	var s = new Scheme("a b a b / c c");
-
-	if (s.reduceRhymingDict(rhymeDic)) {
-		console.log(s.getPoem());
-	} else {
-		console.log("Failed.");
-	}
-
-
-});
-
-
-
-
