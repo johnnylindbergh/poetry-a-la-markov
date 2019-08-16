@@ -7,6 +7,9 @@ class Scheme {
 		// store scheme string in Scheme object
 		this.schemeStr = _schemeStr;
 
+		// store array of tokens
+		this.tokens = this.schemeStr.split(' ');
+
 		// String -> Int (mapping of token to frequency)
 		this.tokenFrequency = this.parseTokenFreq();
 
@@ -17,17 +20,16 @@ class Scheme {
 	/*	void -> [String -> Integer]
 		Get the frequency of each token in the scheme string */
 	parseTokenFreq() {
-		var tokens = this.schemeStr.split(' ');		// split by spaces
 		var map = {};	// mapping of token to frequency
 
-		for (var i = 0; i < tokens.length; i++) {
+		for (var i = 0; i < this.tokens.length; i++) {
 			// omit slashes as they are special characters
-			if (tokens[i] != '/') {
+			if (this.tokens[i] != '/') {
 				// increment count of this rhyme token
-				if (!map[tokens[i]]) {
-					map[tokens[i]] = 1;
+				if (!map[this.tokens[i]]) {
+					map[this.tokens[i]] = 1;
 				} else {
-					map[tokens[i]]++;
+					map[this.tokens[i]]++;
 				}
 			}
 		}
@@ -89,27 +91,34 @@ class Scheme {
 
 		// success
 		return true;
-
 	}
 
 	/*	void -> String
 		Generate a full poem based on this scheme */
 	getPoem() {
+		var poem = "";
+		var tokenToSentenceCopy = JSON.parse(JSON.stringify(this.tokenToSentence));
 
+		// for each token
+		for (var i = 0; i < this.tokens.length; i++) {
+			// if special linebreak character, add linebreak
+			if (this.tokens[i] == '/') {
+				poem += '\n';
+			} else {
+				// get all possible rhyming sentences for this rhyme token
+				var possible = tokenToSentenceCopy[this.tokens[i]]
+
+				// generate random index of sentence in this rhyme group
+				var idx = Math.floor(Math.random() * possible.length);
+
+				// add sentence content to poem
+				poem += possible[idx] + '\n';
+
+				// remove sentence from possibilities
+				possible.splice(idx, 1);
+			}
+		}
+
+		return poem;
 	}
 }
-
-
-
-var s = new Scheme('A B / A B C / D D D D D');
-
-var d = [
-	["one", "two", "three"],
-	["another"],
-	["more", "of", "these", "words", "here"],
-	["word"]
-];
-
-var success = s.reduceRhymingDict(d);
-
-console.log(success);
