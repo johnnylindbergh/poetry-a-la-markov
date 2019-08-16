@@ -2,7 +2,18 @@
 	markov.js: Markov chain bits
 */
 
-const sys = require('./setting.js');
+const sys = require('./settings.js');
+const rhyme = require('./rhyme.js');
+
+var testSentences = 
+[
+	"The man jumped over the log.",
+	"The spore producing organ in fungus is called the sporange.",
+	"I like turtles.",
+	"It's hard to see in this fog.",
+	"This is an orange.",
+];
+
 
 module.exports = {
 
@@ -46,6 +57,19 @@ module.exports = {
 		Remove sentences with redundancy in end word */
 	constructRhymingDict: function(sentences) {
 
+		var cache = {};
+
+		for (var i = 0; i < sentences.length; i++){
+
+			rhyme.getRhymes("fart", cache, function(err, res){
+				console.log(res);
+
+			});
+
+
+		}
 	}
 
 }
+
+module.exports.constructRhymingDict(testSentences);
