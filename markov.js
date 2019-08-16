@@ -81,11 +81,11 @@ module.exports = {
 
 	/*	Chain Int -> String[]
 		Generate n random sentences from a given markov chain */
-	getMarkovSentences: function(chain, n) {
+	getMarkovSentences: function(n) {
 		var s = [];
 
 		for (var i = 0; i < n; i++) {
-			s.push(chain.sentence());
+			s.push(module.exports.chain.sentence());
 		}
 
 		return s;
@@ -93,11 +93,8 @@ module.exports = {
 
 	/*	gets the last word of a given sentence */
 	getLastWord: function(sentence){
-
 		var words = sentence.split(" ");
-
-		return words[words.length-1].split('.')[0]
-
+		return words[words.length - 1].split('.')[0]
 	},
 
 	/*	String[] -> String[][]
@@ -141,13 +138,3 @@ module.exports = {
 	}
 
 }
-
-
-
-module.exports.establishMarkovChain(function(err) {
-	if (err) throw err;
-
-	console.log(module.exports.chain.sentence());
-
-
-});
