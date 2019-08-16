@@ -4,6 +4,9 @@
 
 const sys = require('./settings.js');
 const rhyme = require('./rhyme.js');
+const fs = require('fs');
+const markov = require('string-markov-js');
+const readMult = require('read-multiple-files');
 
 var testSentences = 
 [
@@ -14,14 +17,28 @@ var testSentences =
 	"This is an orange.",
 ];
 
-
 module.exports = {
 
 	/*	String -> String
 		Preprocess several training files and dump into specified 
 		corpus file to get it ready to be markov'd */
 	compileCorpus: function(cb) {
+		var data = "";
 
+		// read all markov training files
+		readMult(new Set(sys.MARKOV_TRAINING_FILES)).subscribe({
+		  next(result) {
+		  	// add file contents to bulk data, separated by newline
+		  	data += result.contents.toString() + '\n';
+		  },
+		  complete() {
+
+		  	// process the data here!
+
+		    // write processed text to corpus file
+			fs.writeFile(sys.MARKOV_CORPUS, data, cb);
+		  }
+		});
 	},
 
 	/*	Compile corpus as needed and run trainMarkovChain */
@@ -43,13 +60,35 @@ module.exports = {
 
 	/*	Read and train on corpus file. Stores markov object in module.exports as 'chain' */
 	trainMarkovChain: function(cb) {
+		// read corpus file
+		fs.readFile(sys.MARKOV_CORPUS, function(err, corpus) {
+			if (!err) {
+				// initialize new markov chain
+				var chain = markov.newDataSet();
 
+				// train the chain on the full corpus
+				chain.trainOnString(corpus.toString(), sys.MARKOV_NGRAM, false);
+
+				// store chain in markov.js exports
+				module.exports.chain = chain;
+
+				cb();
+			} else {
+				cb(err);
+			}
+		});
 	},
 
 	/*	Chain Int -> String[]
 		Generate n random sentences from a given markov chain */
 	getMarkovSentences: function(chain, n) {
+		var s = [];
 
+		for (var i = 0; i < n; i++) {
+			s.push(chain.sentence());
+		}
+
+		return s;
 	},
 
 	/*	String[] -> String[][]
@@ -72,4 +111,12 @@ module.exports = {
 
 }
 
-module.exports.constructRhymingDict(testSentences);
+
+
+module.exports.establishMarkovChain(function(err) {
+	if (err) throw err;
+
+	console.log(module.exports.chain.sentence());
+
+
+});

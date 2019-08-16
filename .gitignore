@@ -2,6 +2,7 @@
 /credentials.js
 
 *.txt
+/training
 
 package-lock.json
 
