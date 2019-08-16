@@ -52,17 +52,48 @@ module.exports = {
 
 	},
 
+	/*	gets the last word of a given sentence */
+	getLastWord: function(sentence){
+
+		var words = sentence.split(" ");
+
+		return words[words.length-1].split('.')[0]
+
+	},
+
 	/*	String[] -> String[][]
 		Given a list of sentences, group them together by last word rhyme.
 		Remove sentences with redundancy in end word */
 	constructRhymingDict: function(sentences) {
-
+		var rhymeDic = [];
 		var cache = {};
 
 		for (var i = 0; i < sentences.length; i++){
+			console.log(sentences[i]);
+			var lastWord = module.exports.getLastWord(sentences[i]);
 
-			rhyme.getRhymes("fart", cache, function(err, res){
-				console.log(res);
+
+			rhyme.getRhymes(lastWord, cache, function(err, res){
+
+				if (!err && res.length != 0){
+
+					//console.log(res);
+
+
+					//check the rhymeDic if there is a sentence that ends with one of the words from the res
+					for (var j = 0; j < rhymeDic.length; j++){
+						for (var k = 0; k < rhymeDic[j].length; k++){
+							console.log(rhymeDic[j][k])
+						}
+					}
+
+				} else {
+					// console.log("unable to get rhyme results of " + lastWord );
+					// console.log("sentences[i]: "+sentences[i]);
+					// console.log(i);
+					rhymeDic.push([sentences[i]]);
+				}
+				
 
 			});
 
