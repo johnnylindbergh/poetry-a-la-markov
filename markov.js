@@ -9,23 +9,6 @@ const readMult = require('read-multiple-files');
 const fs = require('fs');
 const markov = require('string-markov-js');
 
-var testSentences = 
-[
-	"The man jumped over the log.",
-	"The spore producing organ in fungus is called the sporange.",
-	"I like turtles.",
-	"It's hard to see in this fog.",
-	"This is an orange.",
-	"I saw a cat.",
-	"The man is fat.",
-	"This person is an acrobat.",
-	"Where is my hat",
-	"Who are you",
-	"Is this true",
-	"True"
-];
-
-
 module.exports = {
 
 	/*	Preprocess several training files and dump into specified 
@@ -99,15 +82,14 @@ module.exports = {
 		return s;
 	},
 
-
 	/*	String -> String
 		Gets the last word of a given sentence */
 	getLastWord: function(sentence){
-
-		// REWRITE TO HANDLE ALL SENTENCE ENDINGS
-
+		// split sentence into array of words
 		var words = sentence.split(" ");
-		return words[words.length - 1].split('.')[0].toLowerCase();
+
+		// get last word, strip of any sentence-ending punctuation, normalize case
+		return words[words.length - 1].replace(/[\.\?\!\"]*/g, "").toLowerCase();
 	},
 
 	/*	String[] -> String[][]
