@@ -4,6 +4,7 @@
 
 const sys = require('./settings.js');
 const rhyme = require('./rhyme.js');
+const Scheme = require('./scheme.js');
 
 var testSentences = 
 [
@@ -12,6 +13,13 @@ var testSentences =
 	"I like turtles.",
 	"It's hard to see in this fog.",
 	"This is an orange.",
+	"I saw a cat.",
+	"The man is fat.",
+	"This person is an acrobat.",
+	"Where is my hat",
+	"Who are you",
+	"Is this true",
+	"True"
 ];
 
 
@@ -93,7 +101,7 @@ module.exports = {
 		Gets the last word of a given sentence */
 	getLastWord: function(sentence){
 		var words = sentence.split(" ");
-		return words[words.length - 1].split('.')[0]
+		return words[words.length - 1].split('.')[0].toLowerCase();
 	},
 
 	/*	String[] -> String[][]
@@ -120,13 +128,40 @@ module.exports = {
 				}
 
 				for (var i = 0; i < sentences.length; i++) {
-					var lastWord = words[i];
-					var rhymes = cache[lastWord];
+					if (sentences[i]){
 
-					console.log(sentences[i]);
-					console.log(rhymes);
+
+						var lastWord = words[i];
+						var rhymes = cache[lastWord];
+						var group = [sentences[i]];
+						sentences[i] = null;
+
+						for (var j = i + 1; j < sentences.length; j++) {
+							if (j < sentences.length && rhymes.indexOf(words[j]) != -1  && sentences[j]) {
+
+								//console.log(words[j]+" rhymes with " + lastWord);
+
+								group.push(sentences[j]);
+								
+								sentences[j] = null;
+							}
+
+						}
+							
+							rhymeDic.push(group);
+						
+						
+
+
+
+
+					}	
 				}
 
+				console.log(rhymeDic);
+				cb(null, rhymeDic);
+
+				//console.log(rhymeDic);
 
 			} catch (err) {
 				cb(err);
@@ -137,6 +172,21 @@ module.exports = {
 
 }
 
-module.exports.constructRhymingDict(testSentences, function(err) {
+
+module.exports.constructRhymingDict(testSentences, function(err, rhymeDic) {
 	if (err) throw err;
+
+	var s = new Scheme("a b a b / c c");
+
+	if (s.reduceRhymingDict(rhymeDic)) {
+		console.log(s.getPoem());
+	} else {
+		console.log("Failed.");
+	}
+
+
 });
+
+
+
+

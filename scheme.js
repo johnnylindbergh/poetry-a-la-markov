@@ -122,3 +122,5 @@ class Scheme {
 		return poem;
 	}
 }
+
+module.exports = Scheme;
