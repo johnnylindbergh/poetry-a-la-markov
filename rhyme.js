@@ -10,8 +10,7 @@ module.exports = {
 		Get all possible rhymes with a given word using a 
 		cache of rhyming API data, or actual calls if necessary */
 	getRhymes: function(word, cache) {
-		return new Promise(function(resolve, reject){
-
+		return new Promise(function(resolve, reject) {
 			// if rhyming API data exists in cache
 			if (cache[word]) {
 				// use that data
@@ -39,19 +38,6 @@ module.exports = {
 						reject(err);
 					}
 				});
-			}
-		});
-	},
-
-	/*	String String -> Boolean
-		Determines whether two words rhyme */
-	rhymesWith: function(w1, w2, cb) {
-		// get rhymes for first word
-		module.exports.getRhymes(w1, function(err, rhymes) {
-			if (!err) {
-				cb(err, rhymes.indexOf(w2) != -1);
-			} else {
-				cb(err);
 			}
 		});
 	}

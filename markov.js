@@ -21,7 +21,22 @@ module.exports = {
 		Preprocess several training files and dump into specified 
 		corpus file to get it ready to be markov'd */
 	compileCorpus: function(cb) {
+		var data = "";
 
+		// read all markov training files
+		readMult(new Set(sys.MARKOV_TRAINING_FILES)).subscribe({
+		  next(result) {
+		  	// add file contents to bulk data, separated by newline
+		  	data += result.contents.toString() + '\n';
+		  },
+		  complete() {
+
+		  	// process the data here!
+
+		    // write processed text to corpus file
+			fs.writeFile(sys.MARKOV_CORPUS, data, cb);
+		  }
+		});
 	},
 
 	/*	Compile corpus as needed and run trainMarkovChain */
@@ -43,22 +58,41 @@ module.exports = {
 
 	/*	Read and train on corpus file. Stores markov object in module.exports as 'chain' */
 	trainMarkovChain: function(cb) {
+		// read corpus file
+		fs.readFile(sys.MARKOV_CORPUS, function(err, corpus) {
+			if (!err) {
+				// initialize new markov chain
+				var chain = markov.newDataSet();
 
+				// train the chain on the full corpus
+				chain.trainOnString(corpus.toString(), sys.MARKOV_NGRAM, false);
+
+				// store chain in markov.js exports
+				module.exports.chain = chain;
+
+				cb();
+			} else {
+				cb(err);
+			}
+		});
 	},
 
 	/*	Chain Int -> String[]
 		Generate n random sentences from a given markov chain */
-	getMarkovSentences: function(chain, n) {
+	getMarkovSentences: function(n) {
+		var s = [];
 
+		for (var i = 0; i < n; i++) {
+			s.push(module.exports.chain.sentence());
+		}
+
+		return s;
 	},
 
 	/*	gets the last word of a given sentence */
 	getLastWord: function(sentence){
-
 		var words = sentence.split(" ");
-
-		return words[words.length-1].split('.')[0]
-
+		return words[words.length - 1].split('.')[0]
 	},
 
 	/*	String[] -> String[][]
