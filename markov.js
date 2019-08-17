@@ -129,7 +129,8 @@ module.exports = {
 						// for the rest of the sentences
 						for (var j = i + 1; j < sentences.length; j++) {
 							// if not looking at same sentence, and last words rhyme
-							if (j < sentences.length && sentences[j] && rhymes.indexOf(words[j]) != -1) {
+							if (j < sentences.length && sentences[j] && rhymes.indexOf(words[j]) != -1 && lastWord !== words[j]) {
+								
 								// add sentence j to group with sentence i
 								group.push(sentences[j]);
 

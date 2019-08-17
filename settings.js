@@ -22,7 +22,13 @@ module.exports = {
 	MARKOV_NGRAM: 1,
 
 	// whether or not to recompile the corpus
-	COMPILE_CORPUS: true,
+	COMPILE_CORPUS: false,
+
+	// how long each line of the poem should be;
+	LINE_LENGTH: 10,
+
+	// to produce poems with lines of varying length to create the posible line length of (LINE_LENGTH ± LINE_LENGTH_VARIANCE )
+	LINE_LENGTH_VARIANCE: 5,
 
 	// how many sentences are generated to piece together a poem from
 	SENTENCE_POOL_SIZE: 300
