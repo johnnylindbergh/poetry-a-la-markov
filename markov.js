@@ -76,7 +76,7 @@ module.exports = {
 		var s = [];
 
 		for (var i = 0; i < n; i++) {
-			s.push(module.exports.chain.sentence());
+			s.push(module.exports.chain.sentence(sys.LINE_LENGTH, sys.LINE_LENGTH_VARIANCE));
 		}
 
 		return s;
