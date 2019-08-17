@@ -22,7 +22,7 @@ module.exports = {
 	MARKOV_NGRAM: 1,
 
 	// whether or not to recompile the corpus
-	COMPILE_CORPUS: false,
+	COMPILE_CORPUS: true,
 
 	// how long each line of the poem should be;
 	LINE_LENGTH: 10,

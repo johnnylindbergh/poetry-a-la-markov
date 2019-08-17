@@ -40,7 +40,7 @@ markov.establishMarkovChain(function(err) {
 	console.log('Done.');
 
 	process.stdout.write('Writing poetry... ');
-	module.exports.generatePoemFromScheme('a b a b c d c d e f e f g g', function(err, poem) {
+	module.exports.generatePoemFromScheme('a b a b c d c d e f e f', function(err, poem) {
 		if (err) throw err;
 		console.log('Done.');
 		console.log('\n\n');
