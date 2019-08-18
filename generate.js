@@ -33,22 +33,3 @@ module.exports = {
 	}
 
 }
-
-process.stdout.write('Establishing markov chain... ');
-markov.establishMarkovChain(function(err) {
-	if (err) throw err;
-	console.log('Done.');
-
-	process.stdout.write('Writing poetry... ');
-	module.exports.generatePoemFromScheme('A A / B B / C C', function(err, poem) {
-		if (err) throw err;
-		console.log('Done.');
-		console.log('\n\n');
-		console.log(poem);
-	});
-});
-
-
-
-
-
