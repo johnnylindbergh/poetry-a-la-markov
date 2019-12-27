@@ -18,22 +18,31 @@ app.use(express.static(__dirname + '/views'));
 var commonSchemes = [
 	'A A / B B / C C',
 	'A B / A B / C D / C D',
-	'A A A'
+	'A A / B B / A',
+	'A B / A B',
+	'A A / B / C C',
+	'A / B / A / B B',
+	'A B B A',
+	'A B A B C B C',
+	'A B A B B C B C'
 ];
 
 // display random poem on home page
 app.get('/', (req, res) => {
+	res.render('home.html');
+});
+
+// generate a poem with a randomly chosen scheme
+app.post('/getMePoemPls', (req, res) => {
 	var sch = commonSchemes[Math.floor(Math.random() * commonSchemes.length)];
 
 	console.log("Choosing scheme " + sch);
 
 	// generate poem
-	gen.generatePoemFromScheme(sch, function(err, poem) {
-		if (!err) {
-			res.render('home.html', { poem: poem });
-		} else {
-			res.render('error.html', { message: err });
-		}
+	gen.generatePoemFromScheme(sch, (err, poem) => {
+		console.log(err);
+		console.log(poem);
+		res.send({ err: err, poem: poem });
 	});
 });
 
